@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gated — Focus Gate</title>
+<style>
+  :root{
+    --bg: #0F1F1B;
+    --panel: #16302A;
+    --panel-line: #244339;
+    --gold: #E3B23C;
+    --sage: #6FA287;
+    --ink: #F2EFE6;
+    --ink-muted: #9FB3AC;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    height: 100%;
+    margin: 0;
+  }
+
+  body{
+    background:
+      radial-gradient(circle at 50% 0%, rgba(227,178,60,0.08), transparent 55%),
+      var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 32px 20px;
+  }
+
+  .card{
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+  }
+
+  .gate{
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 28px;
+    transform-origin: 50% 0%;
+  }
+
+  @keyframes swing{
+    0%   { transform: rotate(-7deg); }
+    50%  { transform: rotate(6deg); }
+    100% { transform: rotate(-4deg); }
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .gate{ animation: swing 1.1s cubic-bezier(.36,.07,.19,.97) 1 both; }
+  }
+
+  .eyebrow{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin: 0 0 14px;
+  }
+
+  h1{
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(28px, 6vw, 38px);
+    line-height: 1.15;
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+
+  h1 .site{
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  p.sub{
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-muted);
+    margin: 0 0 30px;
+  }
+
+  .divider{
+    border: none;
+    border-top: 1px solid var(--panel-line);
+    margin: 0 0 24px;
+  }
+
+  .list-label{
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin: 0 0 12px;
+  }
+
+  .pills{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .pill{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    color: var(--ink-muted);
+  }
+
+  .pill.active{
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .clock{
+    margin-top: 30px;
+    font-size: 13px;
+    color: var(--ink-muted);
+  }
+
+  .clock span{
+    color: var(--ink);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <svg class="gate" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="50" y1="4" x2="50" y2="20" stroke="#244339" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="50" cy="4" r="3" fill="#244339"/>
+      <rect x="12" y="20" width="76" height="52" rx="6" fill="#16302A" stroke="#E3B23C" stroke-width="2.5"/>
+      <line x1="22" y1="30" x2="78" y2="62" stroke="#E3B23C" stroke-width="3" stroke-linecap="round"/>
+      <line x1="22" y1="62" x2="78" y2="30" stroke="#E3B23C" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+
+    <p class="eyebrow">Focus Gate</p>
+    <h1><span class="site" id="siteName">This site</span> is closed for now.</h1>
+    <p class="sub">It's on your blocklist, so it stays shut while Focus Gate is enabled. Turn the extension off in <span style="white-space:nowrap">chrome://extensions</span> if you need through — there's no in-page switch on purpose.</p>
+
+    <hr class="divider">
+
+    <p class="list-label">Currently blocking</p>
+    <div class="pills" id="pillRow">
+      <span class="pill" data-key="YouTube">YouTube</span>
+      <span class="pill" data-key="Instagram">Instagram</span>
+      <span class="pill" data-key="DelugeRPG">DelugeRPG</span>
+      <span class="pill" data-key="Slither.io">Slither.io</span>
+      <span class="pill" data-key="Deadshot.io">Deadshot.io</span>
+      <span class="pill" data-key="Krunker.io">Krunker.io</span>
+    </div>
+
+    <p class="clock" id="clock"></p>
+  </div>
+
+  <script>
+    var params = new URLSearchParams(window.location.search);
+    var site = params.get('site') || 'This site';
+    document.getElementById('siteName').textContent = site;
+    document.title = site + ' is blocked — Focus Gate';
+
+    var pill = document.querySelector('.pill[data-key="' + CSS.escape(site) + '"]');
+    if (pill) pill.classList.add('active');
+
+    function renderClock(){
+      var now = new Date();
+      var time = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      document.getElementById('clock').innerHTML = 'Blocked at <span>' + time + '</span>';
+    }
+    renderClock();
+    setInterval(renderClock, 30000);
+  </script>
+</body>
+</html>

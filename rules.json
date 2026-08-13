@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": { "extensionPath": "/blocked.html?site=YouTube" }
+    },
+    "condition": {
+      "urlFilter": "||youtube.com^",
+      "resourceTypes": ["main_frame", "sub_frame"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": { "extensionPath": "/blocked.html?site=YouTube" }
+    },
+    "condition": {
+      "urlFilter": "||youtu.be^",
+      "resourceTypes": ["main_frame", "sub_frame"]
+    }
+  },
+  {
+    "id": 3,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": { "extensionPath": "/blocked.html?site=Instagram" }
+    },
+    "condition": {
+      "urlFilter": "||instagram.com^",
+      "resourceTypes": ["main_frame", "sub_frame"]
+    }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": { "extensionPath": "/blocked.html?site=DelugeRPG" }
+    },
+    "condition": {
+      "urlFilter": "||delugerpg.com^",
+      "resourceTypes": ["main_frame", "sub_frame"]
+    }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": { "extensionPath": "/blocked.html?site=Slither.io" }
+    },
+    "condition": {
+      "urlFilter": "||slither.io^",
+      "resourceTypes": ["main_frame", "sub_frame"]
+    }
+  },
+  {
+    "id": 6,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": { "extensionPath": "/blocked.html?site=Deadshot.io" }
+    },
+    "condition": {
+      "urlFilter": "||deadshot.io^",
+      "resourceTypes": ["main_frame", "sub_frame"]
+    }
+  },
+  {
+    "id": 7,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": { "extensionPath": "/blocked.html?site=Krunker.io" }
+    },
+    "condition": {
+      "urlFilter": "||krunker.io^",
+      "resourceTypes": ["main_frame", "sub_frame"]
+    }
+  }
+]
